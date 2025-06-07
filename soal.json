@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Apa yang dimaksud dengan geosfer?",
+    "pilihan": ["Atmosfer", "Lapisan bumi", "Lingkungan hidup", "Keseluruhan lapisan bumi", "Tanah"],
+    "jawaban": "Keseluruhan lapisan bumi"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Manakah berikut ini yang termasuk ke dalam hidrosfer?",
+    "pilihan": ["Tanah", "Gunung", "Laut", "Awan", "Batuan"],
+    "jawaban": "Laut"
+  }
+]
