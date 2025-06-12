@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <script src="https://unpkg.com/vue@3"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>DigiTerra 8.0</title>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+  <div id="app" class="max-w-4xl mx-auto mt-10 p-4 shadow-xl bg-white rounded-xl flex-grow flex flex-col">
+    
+    <!-- HEADER -->
+    <header class="mb-6 border-b border-gray-300 pb-4">
+      <h1 class="text-3xl font-bold text-center">DigiTerra 8.0</h1>
+      <p class="italic text-center">Transformasi Digital untuk Penjelajah Kebumian</p>
+      <p class="text-1xl font-bold text-center">&copy; SMA Negeri 8 Kota Tangerang Selatan</p>
+
+    </header>
+
+    <!-- LOGIN / MAIN CONTENT -->
+    <main class="flex-grow">
+      <!-- Login Page -->
+      <div v-if="!isLoggedIn" class="space-y-4">
+        <h1 class="text-2xl font-bold">Login Pengguna</h1>
+        <input v-model="username" placeholder="Nama Pengguna" class="border p-2 w-full rounded" />
+        <input v-model="password" type="password" placeholder="Kata Sandi" class="border p-2 w-full rounded" />
+        <button @click="login" class="bg-blue-500 text-white px-4 py-2 rounded">Masuk</button>
+        <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+      </div>
+
+      <!-- Main Page After Login -->
+      <div v-else>
+        <nav class="flex space-x-4 mb-4 justify-center">
+          <button @click="page='home'" :class="page==='home' ? 'font-bold underline' : ''" class="hover:underline">Beranda</button>
+          <button @click="page='materi'" :class="page==='materi' ? 'font-bold underline' : ''" class="hover:underline">Materi</button>
+          <button @click="page='soal'" :class="page==='soal' ? 'font-bold underline' : ''" class="hover:underline">Soal</button>
+          <button @click="page='profil'" :class="page==='profil' ? 'font-bold underline' : ''" class="hover:underline">Profil</button>
+          <button @click="logout" class="text-red-500 hover:underline">Logout</button>
+        </nav>
+
+<div class="border-t border-gray-300 my-4"></div>
+
+        <div v-if="page === 'home'">
+          <h1 class="text-xl font-semibold">Selamat datang, {{ username }}!</h1>
+          <p>Ini adalah beranda utama.</p>
+        </div>
+
+<div v-if="page === 'materi'">
+  <h1 class="italic text-center font-bold mb-2">Materi Geografi</h1>
+  <div class="border-t border-gray-300 my-4"></div>
+
+
+  <!-- Menu utama Materi Kelas 10, 11, 12, OSN -->
+<div class="mb-4 space-y-2">
+  <div>
+    <button @click="materiSection = 'kelas10'; subMateri = null"
+      class="font-bold text-lg focus:outline-none">Materi Geografi Kelas 10</button>
+  </div>
+  <div>
+    <button @click="materiSection = 'kelas11'; subMateri = null"
+      class="font-bold text-lg focus:outline-none">Materi Geografi Kelas 11</button>
+  </div>
+  <div>
+    <button @click="materiSection = 'kelas12'; subMateri = null"
+      class="font-bold text-lg focus:outline-none">Materi Geografi Kelas 12</button>
+  </div>
+</div>
+<div class="border-t border-gray-300 my-4"></div>
+
+  <!-- Menu utama Materi OSN -->
+  <h1 class="italic text-center font-bold mb-2">Materi Olimpiade Sains Nasional</h1>
+	<div class="border-t border-gray-300 my-4"></div>
+
+  <!-- Menu utama Materi OSNK -->
+<div class="mb-4 space-y-2">
+  <div>
+    <button @click="materiSection = 'osngeografi'; subMateri = null"
+      class="font-bold text-lg focus:outline-none">OSN Geografi </button>
+  </div>
+  <div>
+    <button @click="materiSection = 'osnkebumian'; subMateri = null"
+      class="font-bold text-lg focus:outline-none">OSN Kebumian</button>
+  </div>
+</div>
+<div class="border-t border-gray-300 my-4"></div>
+
+<!-- Materi Kelas 10 -->
+<div v-if="materiSection === 'kelas10'" class="ml-4">
+  <ul class="list-disc list-inside space-y-1">
+    
+    <!-- Hakikat Geografi -->
+    <li>
+      <button @click="toggleSubMateri('hakikatGeografi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Hakikat Geografi
+      </button>
+      <ul v-if="subMateri === 'hakikatGeografi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('definisiGeografi')" class="text-indigo-600 underline">Definisi Geografi</button></li>
+        <li><button @click="loadSubMateriContent('filsafatGeografi')" class="text-indigo-600 underline">Filsafat Geografi</button></li>
+        <li><button @click="loadSubMateriContent('pendekatanGeografi')" class="text-indigo-600 underline">Pendekatan Geografi</button></li>
+        <li><button @click="loadSubMateriContent('konsepGeografi')" class="text-indigo-600 underline">Konsep Geografi</button></li>
+        <li><button @click="loadSubMateriContent('prinsipGeografi')" class="text-indigo-600 underline">Prinsip Geografi</button></li>
+        <li><button @click="loadSubMateriContent('aspekGeografi')" class="text-indigo-600 underline">Aspek-Aspek Geografi</button></li>
+        <li><button @click="loadSubMateriContent('ruangLingkup')" class="text-indigo-600 underline">Ruang Lingkup Geografi</button></li>
+        <li><button @click="loadSubMateriContent('ilmuPenunjang')" class="text-indigo-600 underline">Ilmu Penunjang Geografi</button></li>
+        <li><button @click="loadSubMateriContent('manfaatIlmu')" class="text-indigo-600 underline">Manfaat Ilmu Geografi</button></li>
+      </ul>
+    </li>
+
+    <!-- Pengetahuan Dasar Peta, PJ dan SIG -->
+    <li>
+      <button @click="toggleSubMateri('petaPJSIG')" 
+        class="text-blue-600 underline focus:outline-none">
+        Pengetahuan Dasar Peta, PJ dan SIG
+      </button>
+      <ul v-if="subMateri === 'petaPJSIG'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('pengertianPeta')" class="text-indigo-600 underline">Pengertian Peta</button></li>
+        <li><button @click="loadSubMateriContent('jenisJenisPeta')" class="text-indigo-600 underline">Jenis-Jenis Peta</button></li>
+        <li><button @click="loadSubMateriContent('unsurUnsurPeta')" class="text-indigo-600 underline">Unsur-Unsur Peta</button></li>
+        <li><button @click="loadSubMateriContent('skalaPeta')" class="text-indigo-600 underline">Skala Peta</button></li>
+        <li><button @click="loadSubMateriContent('proyeksiPeta')" class="text-indigo-600 underline">Proyeksi Peta</button></li>
+        <li><button @click="loadSubMateriContent('penginderaanJauh')" class="text-indigo-600 underline">Penginderaan Jauh</button></li>
+        <li><button @click="loadSubMateriContent('SIG')" class="text-indigo-600 underline">Sistem Informasi Geografi (SIG)</button></li>
+      </ul>
+    </li>
+
+    <!-- Penelitian Geografi -->
+    <li>
+      <button @click="toggleSubMateri('penelitianGeografi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Penelitian Geografi
+      </button>
+      <ul v-if="subMateri === 'penelitianGeografi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('pengertianPenelitianGeografi')" class="text-indigo-600 underline">Pengertian Penelitian Geografi</button></li>
+        <li><button @click="loadSubMateriContent('tujuandanManfaatPenelitianGeografi')" class="text-indigo-600 underline">Tujuan dan Manfaat Penelitian Geografi</button></li>
+        <li><button @click="loadSubMateriContent('langkahPenelitianGeografi')" class="text-indigo-600 underline">Langkah-langkah Penelitian Geografi</button></li>
+        <li><button @click="loadSubMateriContent('jenisPenelitianGeografi')" class="text-indigo-600 underline">Jenis-jenis Penelitian Geografi</button></li>
+        <li><button @click="loadSubMateriContent('pengumpulanDataGeografi')" class="text-indigo-600 underline">Metode Pengumpulan Data Geografi</button></li>
+        <li><button @click="loadSubMateriContent('analisisInterpretasiDataGeografi')" class="text-indigo-600 underline">Analisis dan Interpretasi Data Geografi</button></li>
+        <li><button @click="loadSubMateriContent('penyusunanLaporanPenelitianGeografi')" class="text-indigo-600 underline">Penyusunan Laporan Penelitian Geografi</button></li>
+      </ul>
+    </li>
+
+<!-- Jagat Raya dan Tata Surya -->
+<li>
+  <button @click="toggleSubMateri('jagatRaya')" 
+    class="text-blue-600 underline focus:outline-none">
+    Jagat Raya dan Tata Surya
+  </button>
+  <ul v-if="subMateri === 'jagatRaya'" class="list-disc list-inside ml-6 space-y-1">
+    <li><button @click="loadSubMateriContent('pengertianJagatRaya')" class="text-indigo-600 underline">Pengertian Jagat Raya</button></li>
+    <li><button @click="loadSubMateriContent('teoriJagatRaya')" class="text-indigo-600 underline">Teori Terbentuknya Jagat Raya</button></li>
+    <li><button @click="loadSubMateriContent('galaksiBintang')" class="text-indigo-600 underline">Galaksi dan Bintang</button></li>
+    <li><button @click="loadSubMateriContent('strukturTataSurya')" class="text-indigo-600 underline">Tata Surya: Struktur dan Anggotanya</button></li>
+    <li><button @click="loadSubMateriContent('teoriTataSurya')" class="text-indigo-600 underline">Teori Terbentuknya Tata Surya</button></li>
+    <li><button @click="loadSubMateriContent('karakteristikPlanet')" class="text-indigo-600 underline">Karakteristik Planet-Planet</button></li>
+    <li><button @click="loadSubMateriContent('gerakBumiPlanet')" class="text-indigo-600 underline">Gerak Semu dan Nyata Bumi dan Planet</button></li>
+    <li><button @click="loadSubMateriContent('pengaruhTataSurya')" class="text-indigo-600 underline">Kaitan Tata Surya dengan Kehidupan di Bumi</button></li>
+  </ul>
+</li>
+
+<!-- Dinamika Litosfer dan Pedosfer -->
+<li>
+  <button @click="toggleSubMateri('litosferPedosfer')" 
+    class="text-blue-600 underline focus:outline-none">
+    Dinamika Litosfer dan Pedosfer
+  </button>
+  <ul v-if="subMateri === 'litosferPedosfer'" class="list-disc list-inside ml-6 space-y-1">
+    <li><button @click="loadSubMateriContent('pengertianLitosfer')" class="text-indigo-600 underline">Pengertian dan Ruang Lingkup Litosfer</button></li>
+    <li><button @click="loadSubMateriContent('strukturBumi')" class="text-indigo-600 underline">Struktur dan Lapisan Bumi</button></li>
+    <li><button @click="loadSubMateriContent('prosesEndogenEksogen')" class="text-indigo-600 underline">Proses Endogen dan Eksogen</button></li>
+    <li><button @click="loadSubMateriContent('bentukMukaBumi')" class="text-indigo-600 underline">Bentuk Muka Bumi Akibat Proses Geologi</button></li>
+    <li><button @click="loadSubMateriContent('jenisBatuan')" class="text-indigo-600 underline">Jenis-jenis Batuan dan Siklus Batuan</button></li>
+    <li><button @click="loadSubMateriContent('vulkanismeGempa')" class="text-indigo-600 underline">Vulkanisme dan Gempa Bumi</button></li>
+    <li><button @click="loadSubMateriContent('jenisTanah')" class="text-indigo-600 underline">Jenis dan Persebaran Tanah</button></li>
+    <li><button @click="loadSubMateriContent('faktorTanah')" class="text-indigo-600 underline">Faktor Pembentukan Tanah</button></li>
+    <li><button @click="loadSubMateriContent('pelapukanErosi')" class="text-indigo-600 underline">Proses Pelapukan dan Erosi</button></li>
+    <li><button @click="loadSubMateriContent('konservasiTanah')" class="text-indigo-600 underline">Konservasi Tanah dan Lahan</button></li>
+    <li><button @click="loadSubMateriContent('pengaruhLitosfer')" class="text-indigo-600 underline">Pengaruh Dinamika Litosfer dan Pedosfer terhadap Kehidupan</button></li>
+  </ul>
+</li>
+
+<!-- Dinamika Atmosfer -->
+<li>
+  <button @click="toggleSubMateri('dinamikaAtmosfer')" 
+    class="text-blue-600 underline focus:outline-none">
+    Dinamika Atmosfer
+  </button>
+  <ul v-if="subMateri === 'dinamikaAtmosfer'" class="list-disc list-inside ml-6 space-y-1">
+
+    <li><button @click="loadSubMateriContent('pengertianAtmosfer')" class="text-indigo-600 underline">Pengertian Atmosfer dan Lapisan-Lapisannya</button></li>
+    
+    <li><button @click="loadSubMateriContent('komposisiFungsiAtmosfer')" class="text-indigo-600 underline">Komposisi Udara dan Fungsi Atmosfer</button></li>
+    
+    <li><button @click="loadSubMateriContent('cuacaVsIklim')" class="text-indigo-600 underline">Cuaca dan Iklim: Pengertian dan Perbedaan</button></li>
+    
+    <li><button @click="loadSubMateriContent('faktorCuacaIklim')" class="text-indigo-600 underline">Faktor-faktor yang Mempengaruhi Cuaca dan Iklim</button></li>
+    
+    <!-- Submenu: Unsur-unsur Cuaca dan Iklim -->
+    <li>
+      <button @click="toggleSubSubMateri('unsurCuacaIklim')" class="text-indigo-600 underline focus:outline-none">
+        Unsur-unsur Cuaca dan Iklim
+      </button>
+      <ul v-if="subSubMateri === 'unsurCuacaIklim'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('suhuUdara')" class="text-purple-600 underline">Suhu Udara</button></li>
+        <li><button @click="loadSubMateriContent('tekananUdara')" class="text-purple-600 underline">Tekanan Udara</button></li>
+        <li><button @click="loadSubMateriContent('kelembapanUdara')" class="text-purple-600 underline">Kelembapan Udara</button></li>
+        <li><button @click="loadSubMateriContent('angin')" class="text-purple-600 underline">Angin</button></li>
+        <li><button @click="loadSubMateriContent('awan')" class="text-purple-600 underline">Awan</button></li>
+        <li><button @click="loadSubMateriContent('curahHujan')" class="text-purple-600 underline">Curah Hujan</button></li>
+      </ul>
+    </li>
+
+    <li><button @click="loadSubMateriContent('jenisIklim')" class="text-indigo-600 underline">Jenis-Jenis Iklim (Matahari & Koppen)</button></li>
+    
+    <li><button @click="loadSubMateriContent('alatUkurCuaca')" class="text-indigo-600 underline">Alat Ukur Cuaca dan Cara Membacanya</button></li>
+    
+    <li><button @click="loadSubMateriContent('cuacaEkstrem')" class="text-indigo-600 underline">Fenomena Cuaca Ekstrem dan Dampaknya</button></li>
+    
+    <li><button @click="loadSubMateriContent('perubahanIklim')" class="text-indigo-600 underline">Perubahan Iklim dan Pemanasan Global</button></li>
+    
+    <li><button @click="loadSubMateriContent('mitigasiAdaptasiIklim')" class="text-indigo-600 underline">Upaya Mitigasi dan Adaptasi Perubahan Iklim</button></li>
+  </ul>
+</li>
+
+<!-- Dinamika Hidrosfer -->
+<li>
+  <button @click="toggleSubMateri('dinamikaHidrosfer')" 
+    class="text-blue-600 underline focus:outline-none">
+    Dinamika Hidrosfer
+  </button>
+  <ul v-if="subMateri === 'dinamikaHidrosfer'" class="list-disc list-inside ml-6 space-y-1">
+
+    <li><button @click="loadSubMateriContent('pengertianHidrosfer')" class="text-indigo-600 underline">Pengertian Hidrosfer</button></li>
+
+    <li><button @click="loadSubMateriContent('siklusHidrologi')" class="text-indigo-600 underline">Siklus Hidrologi</button></li>
+
+    <!-- Submenu: Air Permukaan -->
+    <li>
+      <button @click="toggleSubSubMateri('airPermukaan')" class="text-indigo-600 underline focus:outline-none">
+        Air Permukaan
+      </button>
+      <ul v-if="subSubMateri === 'airPermukaan'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('sungai')" class="text-purple-600 underline">Sungai</button></li>
+        <li><button @click="loadSubMateriContent('danau')" class="text-purple-600 underline">Danau</button></li>
+        <li><button @click="loadSubMateriContent('rawa')" class="text-purple-600 underline">Rawa</button></li>
+      </ul>
+    </li>
+
+    <li><button @click="loadSubMateriContent('airBawahTanah')" class="text-indigo-600 underline">Air Bawah Tanah</button></li>
+
+    <!-- Submenu: Air Laut -->
+    <li>
+      <button @click="toggleSubSubMateri('airLaut')" class="text-indigo-600 underline focus:outline-none">
+        Air Laut
+      </button>
+      <ul v-if="subSubMateri === 'airLaut'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('karakteristikAirLaut')" class="text-purple-600 underline">Karakteristik Air Laut</button></li>
+        <li><button @click="loadSubMateriContent('gerakanAirLaut')" class="text-purple-600 underline">Gerakan Air Laut (Arus, Pasang Surut, Ombak)</button></li>
+      </ul>
+    </li>
+
+    <li><button @click="loadSubMateriContent('dampakHidrosfer')" class="text-indigo-600 underline">Dampak Perubahan Hidrosfer terhadap Kehidupan</button></li>
+
+    <li><button @click="loadSubMateriContent('pelestarianAir')" class="text-indigo-600 underline">Upaya Pelestarian Sumber Daya Air</button></li>
+  </ul>
+</li>
+  </ul>
+</div>
+
+<!-- Materi Kelas 11 -->
+<div v-if="materiSection === 'kelas11'" class="ml-4">
+  <ul class="list-disc list-inside space-y-1">
+    
+    <!-- Letak Indonesia & Potensi SDA -->
+    <li>
+      <button @click="toggleSubMateri('letakDanSDA')" class="text-blue-600 underline focus:outline-none">
+        Letak Indonesia & Potensi Sumber Daya Alam
+      </button>
+      <ul v-if="subMateri === 'letakDanSDA'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('letakIndonesia')" class="text-indigo-600 underline">Letak Astronomis, Geografis, Geologis</button></li>
+        <li><button @click="loadSubMateriContent('pengaruhLetak')" class="text-indigo-600 underline">Pengaruh Letak terhadap Iklim & Keanekaragaman</button></li>
+        <li><button @click="loadSubMateriContent('klasifikasiSDA')" class="text-indigo-600 underline">Klasifikasi Sumber Daya Alam</button></li>
+      </ul>
+    </li>
+
+    <!-- Persebaran SDA -->
+    <li>
+      <button @click="toggleSubMateri('persebaranSDA')" class="text-blue-600 underline focus:outline-none">
+        Potensi dan Persebaran SDA di Indonesia
+      </button>
+      <ul v-if="subMateri === 'persebaranSDA'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('sdaBiotikAbiotik')" class="text-indigo-600 underline">SDA Biotik dan Abiotik</button></li>
+        <li><button @click="loadSubMateriContent('sdaEnergi')" class="text-indigo-600 underline">SDA Energi: Terbarukan & Tak Terbarukan</button></li>
+        <li><button @click="loadSubMateriContent('sdaWilayah')" class="text-indigo-600 underline">Sebaran SDA di Wilayah Indonesia</button></li>
+      </ul>
+    </li>
+
+    <!-- Ekosistem dan Keanekaragaman Hayati -->
+    <li>
+      <button @click="toggleSubMateri('ekosistem')" class="text-blue-600 underline focus:outline-none">
+        Ekosistem dan Keanekaragaman Hayati
+      </button>
+      <ul v-if="subMateri === 'ekosistem'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('definisiEkosistem')" class="text-indigo-600 underline">Definisi & Komponen Ekosistem</button></li>
+        <li><button @click="loadSubMateriContent('jenisEkosistem')" class="text-indigo-600 underline">Jenis Ekosistem di Indonesia</button></li>
+        <li><button @click="loadSubMateriContent('pelestarianHayati')" class="text-indigo-600 underline">Pelestarian Keanekaragaman Hayati</button></li>
+      </ul>
+    </li>
+
+    <!-- Kependudukan dan Lingkungan -->
+    <li>
+      <button @click="toggleSubMateri('kependudukanLingkungan')" class="text-blue-600 underline focus:outline-none">
+        Kependudukan dan Lingkungan
+      </button>
+      <ul v-if="subMateri === 'kependudukanLingkungan'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('karakterPenduduk')" class="text-indigo-600 underline">Karakteristik Penduduk Indonesia</button></li>
+        <li><button @click="loadSubMateriContent('urbanisasi')" class="text-indigo-600 underline">Urbanisasi dan Dampaknya</button></li>
+        <li><button @click="loadSubMateriContent('masalahLingkungan')" class="text-indigo-600 underline">Permasalahan dan Pengelolaan Lingkungan</button></li>
+      </ul>
+    </li>
+
+    <!-- Mitigasi dan Adaptasi Bencana -->
+    <li>
+      <button @click="toggleSubMateri('mitigasiBencana')" class="text-blue-600 underline focus:outline-none">
+        Mitigasi dan Adaptasi Bencana
+      </button>
+      <ul v-if="subMateri === 'mitigasiBencana'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('risikoBencana')" class="text-indigo-600 underline">Risiko dan Jenis Bencana di Indonesia</button></li>
+        <li><button @click="loadSubMateriContent('mitigasiStrategi')" class="text-indigo-600 underline">Strategi Mitigasi dan Adaptasi</button></li>
+        <li><button @click="loadSubMateriContent('peranMasyarakat')" class="text-indigo-600 underline">Peran Masyarakat dan Pemerintah</button></li>
+      </ul>
+    </li>
+
+    <!-- Globalisasi dan Sistem Wilayah -->
+    <li>
+      <button @click="toggleSubMateri('globalisasiWilayah')" class="text-blue-600 underline focus:outline-none">
+        Globalisasi dan Sistem Wilayah
+      </button>
+      <ul v-if="subMateri === 'globalisasiWilayah'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('pengaruhGlobalisasi')" class="text-indigo-600 underline">Dampak Globalisasi terhadap Geografi</button></li>
+        <li><button @click="loadSubMateriContent('sistemWilayah')" class="text-indigo-600 underline">Konsep Sistem Wilayah & Kawasan</button></li>
+        <li><button @click="loadSubMateriContent('peranIndonesiaGlobal')" class="text-indigo-600 underline">Peran Indonesia di Tingkat Global</button></li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+
+<!-- Materi Kelas 12 -->
+<div v-if="materiSection === 'kelas12'" class="ml-4">
+  <ul class="list-disc list-inside space-y-1">
+    
+    <li>
+      <button @click="toggleSubMateri('pengembanganWilayah')" class="text-blue-600 underline">Pengembangan Wilayah dan Tata Ruang</button>
+      <ul v-if="subMateri === 'pengembanganWilayah'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('konsepWilayah')" class="text-indigo-600 underline">Konsep Wilayah dan Tata Ruang</button></li>
+        <li><button @click="loadSubMateriContent('teoriWilayah')" class="text-indigo-600 underline">Teori dan Paradigma Pengembangan Wilayah</button></li>
+        <li><button @click="loadSubMateriContent('perencanaanRuang')" class="text-indigo-600 underline">Perencanaan Ruang di Indonesia</button></li>
+        <li><button @click="loadSubMateriContent('analisisKeruangan')" class="text-indigo-600 underline">Analisis Pola dan Dinamika Keruangan</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button @click="toggleSubMateri('industri4dan5')" class="text-blue-600 underline">Revolusi Industri 4.0 & Masyarakat 5.0</button>
+      <ul v-if="subMateri === 'industri4dan5'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('revolusiIndustri')" class="text-indigo-600 underline">Ciri Revolusi Industri 4.0</button></li>
+        <li><button @click="loadSubMateriContent('dampakDigitalisasi')" class="text-indigo-600 underline">Dampak Teknologi terhadap Ruang</button></li>
+        <li><button @click="loadSubMateriContent('masyarakat5.0')" class="text-indigo-600 underline">Masyarakat 5.0 dan Tantangannya</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button @click="toggleSubMateri('kesejahteraanWilayah')" class="text-blue-600 underline">Kesejahteraan dan Pembangunan Wilayah</button>
+      <ul v-if="subMateri === 'kesejahteraanWilayah'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('konsepKesejahteraan')" class="text-indigo-600 underline">Konsep Kesejahteraan Wilayah</button></li>
+        <li><button @click="loadSubMateriContent('evaluasiPembangunan')" class="text-indigo-600 underline">Evaluasi Pembangunan Wilayah</button></li>
+        <li><button @click="loadSubMateriContent('pembangunanBerkelanjutan')" class="text-indigo-600 underline">Rancangan Wilayah Berkelanjutan</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button @click="toggleSubMateri('interaksiDesaKota')" class="text-blue-600 underline">Interaksi Desa–Kota</button>
+      <ul v-if="subMateri === 'interaksiDesaKota'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('karakteristikDesaKota')" class="text-indigo-600 underline">Karakteristik Desa dan Kota</button></li>
+        <li><button @click="loadSubMateriContent('strukturKeruangan')" class="text-indigo-600 underline">Struktur dan Mobilitas Ruang</button></li>
+        <li><button @click="loadSubMateriContent('dampakUrbanisasi')" class="text-indigo-600 underline">Dampak Urbanisasi dan Migrasi</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button @click="toggleSubMateri('tataRuangBahagia')" class="text-blue-600 underline">Tata Ruang & Kebahagiaan Penduduk</button>
+      <ul v-if="subMateri === 'tataRuangBahagia'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('kebijakanRuang')" class="text-indigo-600 underline">Strategi Pemanfaatan Tata Ruang</button></li>
+        <li><button @click="loadSubMateriContent('hubunganKesejahteraan')" class="text-indigo-600 underline">Korelasi Tata Ruang dan Kesejahteraan</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button @click="toggleSubMateri('indeksKebahagiaan')" class="text-blue-600 underline">Indeks Kebahagiaan dan Wilayah</button>
+      <ul v-if="subMateri === 'indeksKebahagiaan'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('definisiIK')" class="text-indigo-600 underline">Definisi dan Faktor Indeks Kebahagiaan</button></li>
+        <li><button @click="loadSubMateriContent('perbandinganIK')" class="text-indigo-600 underline">Perbandingan IK Antarwilayah</button></li>
+        <li><button @click="loadSubMateriContent('strategiIK')" class="text-indigo-600 underline">Strategi Meningkatkan IK</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button @click="toggleSubMateri('pengembanganDesaKota')" class="text-blue-600 underline">Pengembangan Desa dan Kota</button>
+      <ul v-if="subMateri === 'pengembanganDesaKota'" class="ml-6 list-disc space-y-1">
+        <li><button @click="loadSubMateriContent('tahapanDesaKota')" class="text-indigo-600 underline">Tahapan Perkembangan Desa–Kota</button></li>
+        <li><button @click="loadSubMateriContent('infrastrukturWilayah')" class="text-indigo-600 underline">Pentingnya Infrastruktur Wilayah</button></li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+
+<!-- Materi OSN Geografi -->
+<div v-if="materiSection === 'osngeografi'" class="ml-4">
+  <ul class="list-disc list-inside space-y-1">
+
+    <!-- Geografi Fisik -->
+    <li>
+      <button @click="toggleSubMateri('geografiFisik')" 
+        class="text-blue-600 underline focus:outline-none">
+        Geografi Fisik
+      </button>
+      <ul v-if="subMateri === 'geografiFisik'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('atmosfer')" class="text-indigo-600 underline">Atmosfer: Cuaca, Iklim, dan Perubahan Iklim</button></li>
+        <li><button @click="loadSubMateriContent('litosfer')" class="text-indigo-600 underline">Litosfer: Vulkanisme, Tektonik, Tanah</button></li>
+        <li><button @click="loadSubMateriContent('hidrosfer')" class="text-indigo-600 underline">Hidrosfer: Sungai, Danau, Air Tanah, Laut</button></li>
+        <li><button @click="loadSubMateriContent('biosfer')" class="text-indigo-600 underline">Biosfer: Ekosistem dan Sebaran Flora Fauna</button></li>
+      </ul>
+    </li>
+
+    <!-- Geografi Manusia -->
+    <li>
+      <button @click="toggleSubMateri('geografiManusia')" 
+        class="text-blue-600 underline focus:outline-none">
+        Geografi Manusia
+      </button>
+      <ul v-if="subMateri === 'geografiManusia'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('demografi')" class="text-indigo-600 underline">Demografi dan Kependudukan</button></li>
+        <li><button @click="loadSubMateriContent('permukimanUrbanisasi')" class="text-indigo-600 underline">Pola Permukiman dan Urbanisasi</button></li>
+        <li><button @click="loadSubMateriContent('aktivitasEkonomi')" class="text-indigo-600 underline">Aktivitas Ekonomi (Pertanian, Industri, Jasa)</button></li>
+        <li><button @click="loadSubMateriContent('globalisasiKetimpangan')" class="text-indigo-600 underline">Globalisasi dan Ketimpangan Wilayah</button></li>
+      </ul>
+    </li>
+
+    <!-- Geografi Regional dan Global -->
+    <li>
+      <button @click="toggleSubMateri('regionalGlobal')" 
+        class="text-blue-600 underline focus:outline-none">
+        Geografi Regional & Global
+      </button>
+      <ul v-if="subMateri === 'regionalGlobal'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('geografiIndonesia')" class="text-indigo-600 underline">Geografi Regional Indonesia</button></li>
+        <li><button @click="loadSubMateriContent('geografiDunia')" class="text-indigo-600 underline">Geografi Regional Dunia</button></li>
+      </ul>
+    </li>
+
+    <!-- Kartografi dan Geospasial -->
+    <li>
+      <button @click="toggleSubMateri('kartografi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Kartografi dan Geospasial
+      </button>
+      <ul v-if="subMateri === 'kartografi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('interpretasiPeta')" class="text-indigo-600 underline">Peta: Skala, Simbol, Kontur</button></li>
+        <li><button @click="loadSubMateriContent('sigPenginderaan')" class="text-indigo-600 underline">SIG dan Penginderaan Jauh</button></li>
+        <li><button @click="loadSubMateriContent('gpsNavigasi')" class="text-indigo-600 underline">Sistem Koordinat dan GPS</button></li>
+      </ul>
+    </li>
+
+    <!-- Isu Geografi Terkini -->
+    <li>
+      <button @click="toggleSubMateri('isuGeografi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Isu Geografi Terkini
+      </button>
+      <ul v-if="subMateri === 'isuGeografi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('perubahanIklimTerkini')" class="text-indigo-600 underline">Perubahan Iklim dan Dampaknya</button></li>
+        <li><button @click="loadSubMateriContent('kerentananBencana')" class="text-indigo-600 underline">Bencana Alam dan Mitigasi</button></li>
+        <li><button @click="loadSubMateriContent('ketahananPangan')" class="text-indigo-600 underline">Ketahanan Pangan dan Energi</button></li>
+        <li><button @click="loadSubMateriContent('perubahanLahan')" class="text-indigo-600 underline">Perubahan Lahan dan Tata Guna</button></li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+
+
+<!-- Materi OSN Kebumian -->
+<div v-if="materiSection === 'osnkebumian'" class="ml-4">
+  <ul class="list-disc list-inside space-y-1">
+    
+    <!-- Meteorologi & Klimatologi -->
+    <li>
+      <button @click="toggleSubMateri('meteorologi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Meteorologi & Klimatologi
+      </button>
+      <ul v-if="subMateri === 'meteorologi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('strukturAtmosfer')" class="text-indigo-600 underline">Struktur dan Komposisi Atmosfer</button></li>
+        <li><button @click="loadSubMateriContent('parameterCuaca')" class="text-indigo-600 underline">Parameter Cuaca dan Instrumennya</button></li>
+        <li><button @click="loadSubMateriContent('sistemCuaca')" class="text-indigo-600 underline">Sistem Cuaca dan Fenomena Ekstrem</button></li>
+        <li><button @click="loadSubMateriContent('sirkulasiAtmosfer')" class="text-indigo-600 underline">Sirkulasi Atmosfer Global</button></li>
+        <li><button @click="loadSubMateriContent('klimatologiDasar')" class="text-indigo-600 underline">Klimatologi Dasar dan Klasifikasi Iklim</button></li>
+        <li><button @click="loadSubMateriContent('perubahanIklim')" class="text-indigo-600 underline">Perubahan Iklim dan Pemanasan Global</button></li>
+        <li><button @click="loadSubMateriContent('observasiCuaca')" class="text-indigo-600 underline">Observasi dan Prediksi Cuaca</button></li>
+        <li><button @click="loadSubMateriContent('interaksiAtmosfer')" class="text-indigo-600 underline">Interaksi Atmosfer dengan Sistem Bumi Lain</button></li>
+      </ul>
+    </li>
+
+    <!-- Geologi -->
+    <li>
+      <button @click="toggleSubMateri('geologi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Geologi
+      </button>
+      <ul v-if="subMateri === 'geologi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('strukturBumi')" class="text-indigo-600 underline">Struktur dan Komposisi Bumi</button></li>
+        <li><button @click="loadSubMateriContent('batuanMineral')" class="text-indigo-600 underline">Batuan dan Mineral</button></li>
+        <li><button @click="loadSubMateriContent('stratigrafi')" class="text-indigo-600 underline">Stratigrafi dan Sejarah Geologi</button></li>
+        <li><button @click="loadSubMateriContent('prosesGeologi')" class="text-indigo-600 underline">Proses Geologi (Endogen & Eksogen)</button></li>
+        <li><button @click="loadSubMateriContent('tektonik')" class="text-indigo-600 underline">Tektonik Lempeng dan Gempa Bumi</button></li>
+        <li><button @click="loadSubMateriContent('petaGeologi')" class="text-indigo-600 underline">Peta Geologi dan Data Geospasial</button></li>
+      </ul>
+    </li>
+
+    <!-- Oseanografi -->
+    <li>
+      <button @click="toggleSubMateri('oseanografi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Oseanografi
+      </button>
+      <ul v-if="subMateri === 'oseanografi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('karakteristikAirLaut')" class="text-indigo-600 underline">Karakteristik Fisik & Kimia Air Laut</button></li>
+        <li><button @click="loadSubMateriContent('arusLaut')" class="text-indigo-600 underline">Arus Laut dan Pasang Surut</button></li>
+        <li><button @click="loadSubMateriContent('gelombangLaut')" class="text-indigo-600 underline">Gelombang Laut dan Dinamika Pantai</button></li>
+        <li><button @click="loadSubMateriContent('interaksiLautAtmosfer')" class="text-indigo-600 underline">Interaksi Laut-Atmosfer (ENSO, IOD)</button></li>
+        <li><button @click="loadSubMateriContent('ekosistemLaut')" class="text-indigo-600 underline">Ekosistem Laut dan Upwelling</button></li>
+        <li><button @click="loadSubMateriContent('pemetaanLaut')" class="text-indigo-600 underline">Pemetaan Dasar Laut & Satelit</button></li>
+      </ul>
+    </li>
+
+    <!-- Astronomi -->
+    <li>
+      <button @click="toggleSubMateri('astronomi')" 
+        class="text-blue-600 underline focus:outline-none">
+        Astronomi & Tata Surya
+      </button>
+      <ul v-if="subMateri === 'astronomi'" class="list-disc list-inside ml-6 space-y-1">
+        <li><button @click="loadSubMateriContent('gerakLangit')" class="text-indigo-600 underline">Gerak Benda Langit dan Pengamatan</button></li>
+        <li><button @click="loadSubMateriContent('tataSurya')" class="text-indigo-600 underline">Sistem Tata Surya dan Planet</button></li>
+        <li><button @click="loadSubMateriContent('gerhanaPasangMusim')" class="text-indigo-600 underline">Gerhana, Pasang Surut, dan Musim</button></li>
+        <li><button @click="loadSubMateriContent('koordinatLangit')" class="text-indigo-600 underline">Navigasi Bintang dan Koordinat Langit</button></li>
+        <li><button @click="loadSubMateriContent('bendaLangitKecil')" class="text-indigo-600 underline">Asteroid, Komet, Meteoroid</button></li>
+        <li><button @click="loadSubMateriContent('alatAstronomi')" class="text-indigo-600 underline">Alat Astronomi (Stellarium, Teleskop)</button></li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+
+  <!-- Isi konten submenu terpilih -->
+	<div v-if="subMateriContent" class="mt-6 p-4 border rounded bg-gray-50">
+    <button @click="subMateriContent = null" class="text-sm text-red-600 underline mb-2">Tutup Isi Materi</button>
+    <div v-html="subMateriContent"></div>
+  </div>
+</div>
+
+        <div v-if="page === 'soal'">
+          <h2 class="text-xl font-semibold mb-4">Pilihan Latihan Soal OSN</h2>
+          <ul class="mb-4 space-y-2">
+            <li>
+              <button @click="pilihSoalTahun(2019)" 
+                :class="{'font-bold underline': tahunSoal === 2019}" 
+                class="text-blue-600 hover:underline">
+                Soal OSN-K Kebumian Tahun 2019
+              </button>
+            </li>
+            <li>
+              <button @click="pilihSoalTahun(2020)" 
+                :class="{'font-bold underline': tahunSoal === 2020}" 
+                class="text-blue-600 hover:underline">
+                Soal OSN-K Kebumian Tahun 2020
+              </button>
+            </li>
+            <li>
+              <button @click="pilihSoalTahun(2021)" 
+                :class="{'font-bold underline': tahunSoal === 2021}" 
+                class="text-blue-600 hover:underline">
+                Soal OSN-K Kebumian Tahun 2021
+              </button>
+            </li>
+            <li>
+              <button @click="pilihSoalTahun(2022)" 
+                :class="{'font-bold underline': tahunSoal === 2022}" 
+                class="text-blue-600 hover:underline">
+                Soal OSN-K Kebumian Tahun 2022
+              </button>
+            </li>
+            <li>
+              <button @click="pilihSoalTahun(2023)" 
+                :class="{'font-bold underline': tahunSoal === 2023}" 
+                class="text-blue-600 hover:underline">
+                Soal OSN-K Kebumian Tahun 2023
+              </button>
+            </li>
+            <li>
+              <button @click="pilihSoalTahun(2024)" 
+                :class="{'font-bold underline': tahunSoal === 2024}" 
+                class="text-blue-600 hover:underline">
+                Soal OSN-K Kebumian Tahun 2024
+              </button>
+            </li>
+          </ul>
+
+          <div v-if="tahunSoal && soalTahun.length > 0">
+            <p class="mb-2 font-semibold">Soal Tahun {{ tahunSoal }}</p>
+            <div v-if="!selesai && currentSoal">
+              <p class="mb-3"><strong>{{ currentSoal.pertanyaan }}</strong></p>
+              <ul>
+                <li v-for="(pilihan, index) in currentSoal.pilihan" :key="index" class="mb-2">
+                  <button 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                    @click="jawab(pilihan)">
+                    {{ pilihan }}
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div v-else>
+              <p class="text-green-600 font-semibold mb-4">Skor akhir: {{ skor }} dari {{ soalTahun.length }}</p>
+              <button @click="resetSoal" class="bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded">Ulangi</button>
+            </div>
+          </div>
+
+          <div v-else-if="tahunSoal && soalTahun.length === 0">
+            <p>Soal untuk tahun {{ tahunSoal }} belum tersedia.</p>
+          </div>
+        </div>
+
+<div v-if="page === 'profil'">
+  <h2 class="text-xl font-semibold">Profil</h2>
+  <p><strong>Username:</strong> {{ username }}</p>
+  <p><strong>Nama Lengkap:</strong> {{ nama }}</p>
+  <p><strong>Kelas:</strong> {{ kelas }}</p>
+</div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-6 border-t border-gray-300 pt-4 text-center text-gray-600 text-sm">
+      &copy; 2025 DigiTerra 8.0 — Transformasi Digital untuk Penjelajah Kebumian
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</body>
+</html>
